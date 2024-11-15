@@ -21,7 +21,8 @@ const getArticleById = async (req, res) => {
 
 const createArticle = async (req, res) => {
   try {
-    const article = new Article(req.body);
+    userId = req.user.id;
+    const article = new Article({ ...req.body, author: userId });
     const savedArticle = await article.save();
     res.status(201).json(savedArticle);
   } catch (error) {
