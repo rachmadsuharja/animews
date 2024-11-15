@@ -1,10 +1,8 @@
-const express = require("express");
-const router = express.Router();
+const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
 
-router.post("/register", async (req, res) => {
+const register = async (req, res) => {
   const { name, email, password } = req.body;
   try {
     const isExist = await User.findOne({ email });
@@ -17,7 +15,7 @@ router.post("/register", async (req, res) => {
     const user = new User({
       name,
       email,
-      hashedPassword,
+      password: hashedPassword,
     });
 
     await user.save();
@@ -25,9 +23,9 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-});
+};
 
-router.post("/login", async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -46,6 +44,6 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-});
+};
 
-module.export = router;
+module.exports = { register, login };
