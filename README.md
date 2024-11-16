@@ -44,6 +44,7 @@ JWT_SECRET_KEY=<your-jwt-secret-key>
 **4. Start the development servers**
 
 ```bash
+# Backend
 cd backend
 npm run dev
 
