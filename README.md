@@ -57,5 +57,5 @@ npm start
 
 <ul>
 <li><b>Backend API :</b> <a href="http://localhost:5000/api">http://localhost:5000/api</a></li>
-<li><b>Frontend :</b> <a href="http://localhost:3000">http://localhost:3000</a></li>
+<li><b>Frontend :</b> <a href="http://localhost:5173">http://localhost:5173</a></li>
 </ul>
