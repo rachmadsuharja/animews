@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
   Dialog,
   DialogPanel,
@@ -45,18 +46,27 @@ const Header = () => {
           </button>
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+          <NavLink to="/" className="text-sm/6 font-semibold text-gray-900">
             Home
-          </a>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+          </NavLink>
+          <NavLink
+            to="/anime"
+            className="text-sm/6 font-semibold text-gray-900"
+          >
             Anime
-          </a>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+          </NavLink>
+          <NavLink
+            to="/manga"
+            className="text-sm/6 font-semibold text-gray-900"
+          >
             Manga
-          </a>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+          </NavLink>
+          <NavLink
+            to="/forum"
+            className="text-sm/6 font-semibold text-gray-900"
+          >
             Forum
-          </a>
+          </NavLink>
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
               More
@@ -69,31 +79,40 @@ const Header = () => {
               transition
               className="absolute -left-3 top-full z-10 mt-5 w-60 overflow-hidden rounded bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
             >
-              <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                <a href="#" className="block font-semibold text-gray-900">
-                  Music
-                </a>
-              </div>
-              <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                <a href="#" className="block font-semibold text-gray-900">
-                  Events
-                </a>
-              </div>
-              <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                <a href="#" className="block font-semibold text-gray-900">
-                  Industry
-                </a>
-              </div>
+              <NavLink
+                to="/music"
+                className="group relative flex items-center gap-x-6 rounded-lg px-4 py-2 text-sm/6 hover:bg-gray-50"
+              >
+                Music
+              </NavLink>
+              <NavLink
+                to="/events"
+                className="group relative flex items-center gap-x-6 rounded-lg px-4 py-2 text-sm/6 hover:bg-gray-50"
+              >
+                Events
+              </NavLink>
+              <NavLink
+                to="/industry"
+                className="group relative flex items-center gap-x-6 rounded-lg px-4 py-2 text-sm/6 hover:bg-gray-50"
+              >
+                Industry
+              </NavLink>
             </PopoverPanel>
           </Popover>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-3">
-          <button className="bg-blue-600 text-blue-100 px-6 py-2 rounded text-sm/6 font-semibold">
+          <NavLink
+            to="/auth/login"
+            className="bg-blue-600 text-blue-100 px-6 py-2 rounded text-sm/6 font-semibold"
+          >
             Login
-          </button>
-          <button className="bg-blue-100 text-blue-600 px-6 py-2 rounded text-sm/6 font-semibold">
+          </NavLink>
+          <NavLink
+            to="/auth/register"
+            className="bg-blue-100 text-blue-600 px-6 py-2 rounded text-sm/6 font-semibold"
+          >
             Register
-          </button>
+          </NavLink>
         </div>
       </nav>
 
@@ -125,30 +144,30 @@ const Header = () => {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                <a
-                  href="#"
+                <NavLink
+                  to="/home"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Home
-                </a>
-                <a
-                  href="#"
+                </NavLink>
+                <NavLink
+                  to="/anime"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Anime
-                </a>
-                <a
-                  href="#"
+                </NavLink>
+                <NavLink
+                  to="/manga"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Manga
-                </a>
-                <a
-                  href="#"
+                </NavLink>
+                <NavLink
+                  to="/forum"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Forum
-                </a>
+                </NavLink>
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                     More
@@ -180,12 +199,18 @@ const Header = () => {
                 </Disclosure>
               </div>
               <div className="py-6">
-                <a
-                  href="#"
+                <NavLink
+                  to="/auth/login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
-                  Log in
-                </a>
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/auth/register"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                >
+                  Register
+                </NavLink>
               </div>
             </div>
           </div>

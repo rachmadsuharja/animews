@@ -1,7 +1,7 @@
 import DefaultLayout from "../components/layouts/DefaultLayout";
 
-const HomePage = () => {
-  document.title = "Home | Animews.com";
+const MangaPage = () => {
+  document.title = "Manga | Animews.com";
   return (
     <>
       <DefaultLayout>
@@ -26,4 +26,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default MangaPage;
