@@ -1,27 +1,63 @@
 import { NavLink } from "react-router-dom";
 import DefaultAuthLayout from "./../../components/layouts/DefaultAuthLayout";
+import { useState } from "react";
+import axios from "axios";
 
 const RegisterPage = () => {
+  document.title = "Register | Animews.com";
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        import.meta.env.VITE_API_BASE_URL + "/auth/register",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <DefaultAuthLayout
         title="Register"
         subtitle="Welcome to Animews! Mewchan"
       >
-        <form className="mt-8 grid grid-cols-6 gap-4">
+        <form onSubmit={handleSubmit} className="mt-8 grid grid-cols-6 gap-4">
           <div className="col-span-6">
             <label
-              htmlFor="fullname"
+              htmlFor="fullName"
               className="block text-sm font-medium text-gray-700"
             >
               Full name
             </label>
             <input
               type="text"
-              id="fullname"
-              name="fullname"
+              id="fullName"
+              name="fullName"
               placeholder="Your full name"
-              className="mt-1 p-3 w-full rounded-lg ring-1 ring-inset ring-gray-300 bg-white text-gray-700 focus:outline-blue-500 focus:ring-2 shadow-sm"
+              value={formData.fullName}
+              onChange={handleChange}
+              className="mt-1 p-3 w-full rounded-lg ring-1 ring-inset ring-gray-300 bg-white text-gray-700 focus:outline-blue-500 focus:ring-2 shadow-sm "
             />
           </div>
 
@@ -37,7 +73,9 @@ const RegisterPage = () => {
               id="email"
               name="email"
               placeholder="user@example.com"
-              className="mt-1 p-3 w-full rounded-lg ring-1 ring-inset ring-gray-300 bg-white text-gray-700 focus:outline-blue-500 focus:ring-2 shadow-sm"
+              value={formData.email}
+              onChange={handleChange}
+              className="mt-1 p-3 w-full rounded-lg ring-1 ring-inset ring-gray-300 bg-white text-gray-700 focus:outline-blue-500 focus:ring-2 shadow-sm "
             />
           </div>
 
@@ -53,6 +91,8 @@ const RegisterPage = () => {
               id="password"
               name="password"
               placeholder="********"
+              value={formData.password}
+              onChange={handleChange}
               className="mt-1 p-3 w-full rounded-lg ring-1 ring-inset ring-gray-300 bg-white text-gray-700 focus:outline-blue-500 focus:ring-2 shadow-sm"
             />
           </div>
@@ -70,6 +110,8 @@ const RegisterPage = () => {
               id="confirm_password"
               name="confirm_password"
               placeholder="********"
+              value={formData.confirm_password}
+              onChange={handleChange}
               className="mt-1 p-3 w-full rounded-lg ring-1 ring-inset ring-gray-300 bg-white text-gray-700 focus:outline-blue-500 focus:ring-2 shadow-sm"
             />
           </div>
@@ -91,7 +133,10 @@ const RegisterPage = () => {
           </div>
 
           <div className="col-span-6 flex flex-col sm:flex-row text-center justify-start sm:items-center sm:gap-4">
-            <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-4 py-3 text-sm font-medium text-white transition focus:ring hover:bg-blue-500 active:bg-blue-500">
+            <button
+              type="submit"
+              className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-4 py-3 text-sm font-medium text-white transition focus:ring hover:bg-blue-500 active:bg-blue-500"
+            >
               Create an account
             </button>
 

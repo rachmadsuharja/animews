@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import DefaultAuthLayout from "../../components/layouts/DefaultAuthLayout";
 
 const RegisterPage = () => {
+  document.title = "Login | Animews.com";
   return (
     <>
       <DefaultAuthLayout

@@ -2,6 +2,7 @@ import DefaultLayout from "../components/layouts/DefaultLayout";
 
 const HomePage = () => {
   document.title = "Home | Animews.com";
+
   return (
     <>
       <DefaultLayout>
