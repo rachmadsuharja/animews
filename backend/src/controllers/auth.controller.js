@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const userSchema = require("../middlewares/validation");
 
 const getUsers = async (req, res) => {
   try {
@@ -13,6 +14,7 @@ const getUsers = async (req, res) => {
 
 const register = async (req, res) => {
   try {
+    userSchema.validate(req.body);
     const { fullName, email, password } = req.body;
     const isExist = await User.findOne({ email });
     if (isExist) {
