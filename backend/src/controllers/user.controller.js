@@ -12,25 +12,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-const register = async (req, res) => {
-  try {
-    userSchema.validate(req.body);
-    const { fullName, email, password } = req.body;
-    const isExist = await User.findOne({ email });
-    if (isExist) {
-      return res.status(400).json({ message: "Email already used." });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = new User({ fullName, email, password: hashedPassword });
-
-    await user.save();
-    res.status(201).json({ message: "User successfully registered." });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+const register = async (req, res) => {};
 
 const login = async (req, res) => {
   const { email, password } = req.body;
