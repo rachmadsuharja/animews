@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const userSchema = require("../middlewares/validation");
+const userService = require("../services/user.service");
 
 const getUsers = async (req, res) => {
   try {
@@ -12,7 +12,17 @@ const getUsers = async (req, res) => {
   }
 };
 
-const register = async (req, res) => {};
+const register = async (req, res, next) => {
+  try {
+    const user = await userService.register(req.body);
+    res.status(201).json({
+      message: "User successfully registered.",
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const login = async (req, res) => {
   const { email, password } = req.body;
