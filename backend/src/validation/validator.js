@@ -4,7 +4,11 @@ const validator = (schema, request) => {
   const result = schema.validate(request);
 
   if (result.error) {
-    throw new ResponseError(400, result.error.message);
+    const errors = {};
+    result.error.details.forEach((detail) => {
+      errors[detail.path] = detail.message;
+    });
+    throw new ResponseError(400, errors);
   }
 
   return result.value;
