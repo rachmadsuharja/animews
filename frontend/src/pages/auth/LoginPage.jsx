@@ -5,10 +5,7 @@ const RegisterPage = () => {
   document.title = "Login | Animews.com";
   return (
     <>
-      <DefaultAuthLayout
-        title="Login"
-        subtitle="Welcome back to Animews! Mewchan"
-      >
+      <DefaultAuthLayout title="Login" subtitle="Welcome back to Animews!">
         <form className="mt-8 w-full grid grid-cols-6 gap-4">
           <div className="col-span-6">
             <label
@@ -62,7 +59,7 @@ const RegisterPage = () => {
 
             <p className="mt-4 text-sm text-gray-500 sm:mt-0">
               Don&apos;t have an account yet?
-              <NavLink to="/auth/register" className="text-gray-700 underline">
+              <NavLink to="/auth/register" className="text-blue-700 underline">
                 {" "}
                 Register
               </NavLink>

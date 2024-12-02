@@ -11,6 +11,7 @@ import EventPage from "./pages/IndustryPage";
 import IndustryPage from "./pages/IndustryPage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
   {
