@@ -4,6 +4,7 @@ const connect = require("./config/database");
 const articleRoutes = require("./routes/articles.routes");
 const userRoutes = require("./routes/user.routes");
 const errorHandler = require("./middlewares/errorHandler");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const app = express();
@@ -12,6 +13,7 @@ connect();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/api", (req, res) => {
   res.send("Welcome to Animews Backend API");

@@ -8,7 +8,7 @@ const RegisterUserValidation = Joi.object({
   }),
   email: Joi.string().email().required().messages({
     "string.email": "Please enter a valid email address.",
-    "string.empty": "Email is required.",
+    "string.empty": "Email address is required.",
   }),
   password: Joi.string().min(8).required().messages({
     "string.min": "Password must be at least 8 characters long.",
@@ -16,4 +16,14 @@ const RegisterUserValidation = Joi.object({
   }),
 });
 
-module.exports = { RegisterUserValidation };
+const LoginUserValidation = Joi.object({
+  email: Joi.string().email().required().messages({
+    "string.email": "Please enter a valid email address.",
+    "string.empty": "Please enter your email address.",
+  }),
+  password: Joi.string().required().messages({
+    "string.empty": "Please enter your password.",
+  }),
+});
+
+module.exports = { RegisterUserValidation, LoginUserValidation };

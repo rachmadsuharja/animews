@@ -1,6 +1,4 @@
 const User = require("../models/user");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const userService = require("../services/user.service");
 
 const getUsers = async (req, res) => {
@@ -24,24 +22,22 @@ const register = async (req, res, next) => {
   }
 };
 
-const login = async (req, res) => {
-  const { email, password } = req.body;
-
+const login = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email });
-    const isMatch = await bcrypt.compare(password, user.password);
+    const token = await userService.login(req.body);
 
-    if (!user || !isMatch) {
-      return res.status(400).json({ message: "Invalid email or password" });
-    }
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1h",
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+      maxAge: 36000000,
     });
 
-    res.json({ token });
+    res.status(200).json({
+      message: "You're logged in.",
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
