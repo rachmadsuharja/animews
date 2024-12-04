@@ -26,12 +26,7 @@ const login = async (req, res, next) => {
   try {
     const token = await userService.login(req.body);
 
-    res.cookie("auth_token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "Strict",
-      maxAge: 36000000,
-    });
+    res.cookie("auth_token", token);
 
     res.status(200).json({
       message: "You're logged in.",
@@ -41,4 +36,11 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { getUsers, login, register };
+const logout = (req, res) => {
+  res
+    .clearCookie("auth_token")
+    .status(200)
+    .json({ message: "Successfully logged out." });
+};
+
+module.exports = { getUsers, register, login, logout };
