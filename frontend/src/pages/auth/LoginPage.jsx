@@ -36,13 +36,10 @@ const RegisterPage = () => {
         .post(
           import.meta.env.VITE_API_BASE_URL + "/auth/login",
           { email, password },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          { withCredentials: true }
         )
         .then((response) => {
+          navigate("/");
           toast.success(response.data.message, {
             position: "top-right",
             autoClose: 3000,
@@ -53,8 +50,6 @@ const RegisterPage = () => {
         email: "",
         password: "",
       });
-
-      navigate("/");
     } catch (error) {
       setErrors(error.response.data.errors || {});
     } finally {

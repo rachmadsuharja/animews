@@ -12,6 +12,7 @@ import IndustryPage from "./pages/IndustryPage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthProvider } from "./providers/AuthProvider";
 
 const router = createBrowserRouter(
   [
@@ -66,6 +67,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <AuthProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AuthProvider>
   </StrictMode>
 );

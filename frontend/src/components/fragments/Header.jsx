@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogPanel,
@@ -15,9 +15,32 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = Cookies.get("auth_token");
+    token && setIsLoggedIn(true);
+  }, []);
+
+  const logout = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        import.meta.env.VITE_API_BASE_URL + "/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      navigate("/auth/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <header>
@@ -77,7 +100,7 @@ const Header = () => {
             </PopoverButton>
             <PopoverPanel
               transition
-              className="absolute -left-3 top-full z-10 mt-5 w-60 overflow-hidden rounded bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+              className="absolute -left-3 top-full z-10 mt-5 py-1 w-60 overflow-hidden rounded bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
             >
               <NavLink
                 to="/music"
@@ -100,20 +123,81 @@ const Header = () => {
             </PopoverPanel>
           </Popover>
         </PopoverGroup>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-3">
-          <NavLink
-            to="/auth/login"
-            className="bg-blue-600 text-blue-100 px-6 py-2 rounded text-sm/6 font-semibold"
-          >
-            Login
-          </NavLink>
-          <NavLink
-            to="/auth/register"
-            className="bg-blue-100 text-blue-600 px-6 py-2 rounded text-sm/6 font-semibold"
-          >
-            Register
-          </NavLink>
-        </div>
+        {isLoggedIn ? (
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-3">
+            <Popover className="hidden md:relative md:block">
+              <PopoverButton className="overflow-hidden rounded-full border border-gray-300 shadow-inner">
+                <img
+                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt=""
+                  className="size-10 object-cover"
+                />
+              </PopoverButton>
+
+              <PopoverPanel
+                transition
+                className="absolute end-0 z-10 mt-0.5 py-1 w-56 divide-y divide-gray-100 rounded-md border border-gray-100 bg-white shadow-lg transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+                role="menu"
+              >
+                <NavLink
+                  to="/music"
+                  className="group relative flex items-center gap-x-6 rounded-lg px-4 py-2 text-sm/6 hover:bg-gray-50"
+                >
+                  My Profile
+                </NavLink>
+                <NavLink
+                  to="/events"
+                  className="group relative flex items-center gap-x-6 rounded-lg px-4 py-2 text-sm/6 hover:bg-gray-50"
+                >
+                  Settings
+                </NavLink>
+                <form onSubmit={logout}>
+                  <button
+                    type="submit"
+                    className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+                    role="menuitem"
+                  >
+                    Logout
+                  </button>
+                </form>
+              </PopoverPanel>
+            </Popover>
+
+            <div className="block md:hidden">
+              <button className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-3">
+            <NavLink
+              to="/auth/login"
+              className="bg-blue-600 text-blue-100 px-6 py-2 rounded text-sm/6 font-semibold"
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/auth/register"
+              className="bg-blue-100 text-blue-600 px-6 py-2 rounded text-sm/6 font-semibold"
+            >
+              Register
+            </NavLink>
+          </div>
+        )}
       </nav>
 
       <Dialog
@@ -198,20 +282,53 @@ const Header = () => {
                   </DisclosurePanel>
                 </Disclosure>
               </div>
-              <div className="py-6">
-                <NavLink
-                  to="/auth/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  Login
-                </NavLink>
-                <NavLink
-                  to="/auth/register"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  Register
-                </NavLink>
-              </div>
+              <hr className="my-3" />
+              {isLoggedIn ? (
+                <Disclosure>
+                  <DisclosureButton className="overflow-hidden rounded-full border border-gray-300 shadow-inner">
+                    <img
+                      src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      alt=""
+                      className="size-10 object-cover"
+                    />
+                  </DisclosureButton>
+                  <DisclosurePanel>
+                    <DisclosureButton
+                      as="a"
+                      className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50"
+                    >
+                      My Profile
+                    </DisclosureButton>
+                    <DisclosureButton
+                      as="a"
+                      className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50"
+                    >
+                      Settings
+                    </DisclosureButton>
+                    <DisclosureButton
+                      as="a"
+                      className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50"
+                    >
+                      Logout
+                    </DisclosureButton>
+                  </DisclosurePanel>
+                </Disclosure>
+              ) : (
+                <div className="py-6">
+                  <NavLink
+                    to="/auth/login"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                  >
+                    Login
+                  </NavLink>
+                  <NavLink
+                    to="/auth/register"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                  >
+                    Register
+                  </NavLink>
+                </div>
+              )}
             </div>
           </div>
         </DialogPanel>
