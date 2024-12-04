@@ -3,7 +3,7 @@ import DefaultAuthLayout from "./../../components/layouts/DefaultAuthLayout";
 import { useState } from "react";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
   document.title = "Register | Animews.com";
@@ -40,26 +40,28 @@ const RegisterPage = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const { fullName, email, password } = formData;
-      await axios.post(
-        import.meta.env.VITE_API_BASE_URL + "/auth/register",
-        { fullName, email, password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axios
+        .post(
+          import.meta.env.VITE_API_BASE_URL + "/auth/register",
+          { fullName, email, password },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          toast.success(response, {
+            position: "top-right",
+            autoClose: 3000,
+          });
+        });
 
       setFormData({
         fullName: "",
         email: "",
         password: "",
         confirmPassword: "",
-      });
-
-      toast.success("User successfully registered!", {
-        position: "top-right",
-        autoClose: 3000,
       });
 
       navigate("/auth/login");
@@ -242,7 +244,6 @@ const RegisterPage = () => {
             </p>
           </div>
         </form>
-        <ToastContainer />
       </DefaultAuthLayout>
     </>
   );
