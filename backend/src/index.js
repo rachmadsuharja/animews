@@ -2,9 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const connect = require("./config/database");
 const articleRoutes = require("./routes/articles.routes");
-const userRoutes = require("./routes/user.routes");
+const authRoutes = require("./routes/auth.routes");
 const errorHandler = require("./middlewares/errorHandler");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -19,12 +20,13 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use("/public", express.static(path.join(__dirname, "public/")));
 
 app.get("/api", (req, res) => {
   res.send("Welcome to Animews Backend API");
 });
 
-app.use("/api/auth", userRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api", articleRoutes);
 
 app.use(errorHandler);

@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const userService = require("../services/user.service");
+const authService = require("../services/auth.service");
 
 const getUsers = async (req, res) => {
   try {
@@ -12,7 +12,7 @@ const getUsers = async (req, res) => {
 
 const register = async (req, res, next) => {
   try {
-    const user = await userService.register(req.body);
+    const user = await authService.register(req.body);
     res.status(201).json({
       message: "User successfully registered.",
       data: user,
@@ -24,7 +24,7 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const token = await userService.login(req.body);
+    const token = await authService.login(req.body);
 
     res.cookie("auth_token", token);
 
