@@ -7,10 +7,11 @@ const User = require("../models/user");
 const ResponseError = require("../errors/response");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const randomAvatar = require("../utils/randomAvatar");
 
 const register = async (request) => {
   const validatedUser = validator(RegisterUserValidation, request);
-  const { fullName, email, password } = validatedUser;
+  const { username, fullName, email, password, gender } = validatedUser;
 
   const isExists = await User.findOne({ email });
   if (isExists) {
@@ -19,7 +20,14 @@ const register = async (request) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = new User({ fullName, email, password: hashedPassword });
+  const user = new User({
+    username,
+    fullName,
+    email,
+    password: hashedPassword,
+    gender,
+    avatar: randomAvatar(gender),
+  });
   await user.save();
 
   return user;
