@@ -2,7 +2,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import DefaultAuthLayout from "../../components/layouts/DefaultAuthLayout";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import axios from "axios";
 
 const RegisterPage = () => {
@@ -32,24 +31,22 @@ const RegisterPage = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const { email, password } = formData;
-      await axios
-        .post(
-          import.meta.env.VITE_API_BASE_URL + "/auth/login",
-          { email, password },
-          { withCredentials: true }
-        )
-        .then((response) => {
-          navigate("/");
-          toast.success(response.data.message, {
-            position: "top-right",
-            autoClose: 3000,
-          });
-        });
+      const response = await axios.post(
+        import.meta.env.VITE_API_BASE_URL + "/auth/login",
+        { email, password }
+      );
+
+      const token = response.data.token;
+      console.log(token);
+      if (token) {
+        localStorage.setItem("auth_token", token);
+      }
 
       setFormData({
         email: "",
         password: "",
       });
+      navigate("/");
     } catch (error) {
       setErrors(error.response.data.errors || {});
     } finally {

@@ -15,31 +15,44 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import Cookies from "js-cookie";
 import axios from "axios";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = Cookies.get("auth_token");
-    token && setIsLoggedIn(true);
-  }, []);
+  const token = localStorage.getItem("auth_token");
 
-  const logout = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post(
-        import.meta.env.VITE_API_BASE_URL + "/auth/logout",
-        {},
-        { withCredentials: true }
-      );
-      navigate("/auth/login");
-    } catch (error) {
-      console.error(error);
-    }
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        console.log("Fetching data ...");
+        const response = await axios.get(
+          import.meta.env.VITE_API_BASE_URL + "/user/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUser(response.data.user);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    token && fetchUser();
+  }, [token]);
+
+  useEffect(() => {
+    token && setIsLoggedIn(true);
+  }, [token]);
+
+  const logout = () => {
+    localStorage.removeItem("auth_token");
+    navigate("/auth/login");
   };
 
   return (
@@ -128,7 +141,9 @@ const Header = () => {
             <Popover className="hidden md:relative md:block">
               <PopoverButton className="overflow-hidden rounded-full border border-gray-300 shadow-inner">
                 <img
-                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src={
+                    import.meta.env.VITE_PUBLIC_BACKEND_URL + "/" + user.avatar
+                  }
                   alt=""
                   className="size-10 object-cover"
                 />

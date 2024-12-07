@@ -38,6 +38,16 @@ const login = async (request) => {
   const { email, password } = validatedUser;
   const user = await User.findOne({ email });
 
+  const payload = {
+    id: user._id,
+    username: user.username,
+    fullName: user.fullName,
+    email: user.email,
+    gender: user.gender,
+    role: user.role,
+    avatar: user.avatar,
+  };
+
   if (!user) {
     throw new ResponseError(400, {
       email: "Please enter a valid email address.",
@@ -51,7 +61,7 @@ const login = async (request) => {
     });
   }
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
+  const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 

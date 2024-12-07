@@ -9,10 +9,12 @@ const RegisterPage = () => {
   document.title = "Register | Animews.com";
 
   const [formData, setFormData] = useState({
+    username: "",
     fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
+    gender: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -31,31 +33,25 @@ const RegisterPage = () => {
     setErrors({});
     setIsLoading(true);
 
-    if (formData.password !== formData.confirmPassword) {
-      setErrors({ confirmPassword: "Password doesn't match" });
-      setIsLoading(false);
-      return;
-    }
-
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const { fullName, email, password } = formData;
-      await axios
-        .post(
-          import.meta.env.VITE_API_BASE_URL + "/auth/register",
-          { fullName, email, password },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          toast.success(response, {
-            position: "top-right",
-            autoClose: 3000,
-          });
-        });
+      const { username, fullName, email, password, confirmPassword, gender } =
+        formData;
+
+      const response = axios.post(
+        import.meta.env.VITE_API_BASE_URL + "/auth/register",
+        { username, fullName, email, password, confirmPassword, gender },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      toast.success(response, {
+        position: "top-right",
+        autoClose: 3000,
+      });
 
       setFormData({
         fullName: "",
@@ -76,6 +72,32 @@ const RegisterPage = () => {
     <>
       <DefaultAuthLayout title="Register" subtitle="Welcome to Animews!">
         <form onSubmit={handleSubmit} className="mt-8 grid grid-cols-6 gap-4">
+          <div className="col-span-6">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Your username"
+              value={formData.username}
+              onChange={handleChange}
+              className={`mt-1 p-3 w-full rounded-lg bg-white text-gray-700 focus:outline-blue-500 focus:ring-2 shadow-sm ring-1 ring-inset ${
+                errors.username ? "ring-red-500" : "ring-gray-300"
+              }`}
+            />
+            {errors.username && (
+              <div className="mt-1 text-red-500 text-xs flex gap-1">
+                <ExclamationCircleIcon className="size-4 flex-shrink-0" />
+                {errors.username}
+              </div>
+            )}
+          </div>
+
           <div className="col-span-6">
             <label
               htmlFor="fullName"
@@ -100,6 +122,27 @@ const RegisterPage = () => {
                 {errors.fullName}
               </div>
             )}
+          </div>
+
+          <div className="col-span-6">
+            <label
+              htmlFor="gender"
+              className="block text-sm font-medium text-gray-900"
+            >
+              {" "}
+              Gender{" "}
+            </label>
+            <select
+              name="gender"
+              id="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              className="mt-1 p-3 w-full rounded-lg bg-white text-gray-700 focus:outline-blue-500 focus:ring-2 shadow-sm ring-1 ring-inset"
+            >
+              <option value="">Please select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
           </div>
 
           <div className="col-span-6">
